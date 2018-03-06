@@ -14,7 +14,7 @@ root.configure(background="#1e353e")                                            
 Robot = PhotoImage(file="Robot.png")
 
 #***************  MENU AND SUB MENUS DECLERATION  *************
-mainMenu = Menu(root, bg="blue")
+mainMenu = Menu(root)
 root.config(menu=mainMenu)                                                      #we are configuring a menu, which is myMenu. root will look at myMenu as a menu in root window now.
 
 fileMenu = Menu(mainMenu, bg="blue")
