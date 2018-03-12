@@ -35,8 +35,8 @@ class Page(tk.Tk):
         fileMenu.add_command(label="Start Page", command=lambda: self.show_frame(StartPage))
         fileMenu.add_command(label="Quit", command=quit)
 
-        statusBar = tk.Label(self, text="Nothing", bg=Bg_theme, bd=2)  # bd=border, creates a border, relief makes it looked sunken in the screen as when a button is pressed
-        statusBar.pack()  # anchor makes sure that my text appear to the left
+        statusBar = tk.Label(self, text="Nothing", bg=Bg_theme, bd=3,fg="white", relief="sunken", anchor="w")  # bd=border, creates a border, relief makes it looked sunken in the screen as when a button is pressed
+        statusBar.pack(side="bottom", fill="x")  # anchor makes sure that my text appear to the left
 
         self.frames = {} #This is a dictionary (i guess same as array..)
 
@@ -138,28 +138,33 @@ class RobotControl(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg=Bg_theme)
 
+        RobotImg = tk.PhotoImage(file="Robot.png")
+
         HeadLineFrame = tk.Frame(self, bg=Bg_theme)
-        HeadLineFrame.grid(row=0, column=0, sticky="EW")
+        HeadLineFrame.pack(side="top", fill="x")
 
-        label1 = tk.Label(HeadLineFrame, text="HEY")
-        label1.grid(row=0, column=0)
+        H_line = tk.Label(HeadLineFrame, text="Robot Control Center", font=HEADLINE_FONT, bg=Bg_theme, fg="white")
+        H_line.grid(row=0, column=1)
 
-        left_frame = tk.Frame(self, bg="blue")
-        left_frame.grid(row=1, column=0)
+        Head_Img = tk.Label(HeadLineFrame, image=RobotImg)
+        Head_Img.grid(row=0, column=0)
 
-        label2 = tk.Label(left_frame, text="HEY")
-        label2.grid(row=0, column=0)
 
-        right_frame = tk.Frame(self, bg="green")
-        right_frame.grid(row=2, column=0)
+        #label1 = tk.Label(HeadLineFrame, text="HEY")
+        #label1.grid(row=0, column=1)
 
-        label3 = tk.Label(right_frame, text="HEY")
-        label3.grid(row=0, column=0)
+        #left_frame = tk.Frame(self, bg="blue")
+        #left_frame.grid(row=1, column=0)
 
-        #RobotImg = tk.PhotoImage(file="Robot.png")
+        #label2 = tk.Label(left_frame, text="HEY")
+        #label2.grid(row=0, column=0)
 
-        #Head_Img = tk.Label(self, image=RobotImg)
-        #Head_Img.grid(row=0, column=0)
+        #right_frame = tk.Frame(self, bg="green")
+        #right_frame.grid(row=2, column=0)
+
+        #label3 = tk.Label(right_frame, text="HEY")
+        #label3.grid(row=0, column=0)
+
 
         #label = tk.Label(self, text="ControlPanel", font=HEADLINE_FONT, bg=Bg_theme, fg="white")   #self is root
         #label.grid(row=0, column=1, sticky="w")
