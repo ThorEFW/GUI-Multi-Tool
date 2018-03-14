@@ -171,6 +171,8 @@ class RobotControl(tk.Frame):
         R_turn = tk.Button(left_frame, text="Right Turn", width=25)
         L_turn = tk.Button(left_frame, text="Left Turn", width=25)
         All_stop = tk.Button(left_frame, text="Motor Stop", width=25)
+        bind_spot = tk.Button(left_frame, text="Push")
+
 
 
         but_send.grid(row=0, column=0, pady=3, padx=2)
@@ -184,6 +186,9 @@ class RobotControl(tk.Frame):
         R_turn.grid(row=5,column=4, padx=20, sticky="n")
         L_turn.grid(row=6,column=4, padx=20, sticky="n")
         All_stop.grid(row=7,column=4, padx=20, sticky="n")
+        bind_spot.grid(row=8, column=4,padx=20, sticky="n")
+
+        bind_spot.focus_set()
 
         but_send.bind("<Button-1>", self.printing)
         but_del.bind("<Button-1>", self.printing)
@@ -195,6 +200,12 @@ class RobotControl(tk.Frame):
         L_turn.bind("<Button-1>", self.printing)
         All_stop.bind("<Button-1>", self.printing)
 
+        left_frame.bind("<Button-1>", self.key_forward)
+
+        bind_spot.bind("<w>", self.key_forward)
+        self.label.bind("<1>", lambda event: self.label.focus_set())
+
+
         #settings.txt = Text(left_frame, width=50, height=20, wrap=WORD)
         #settings.txt.grid(row=1, column=0, pady=4, padx=4, sticky=NSEW)
     # ----------------------------------------------------- Right
@@ -204,6 +215,8 @@ class RobotControl(tk.Frame):
     def printing(self, event):
         print("hey")
 
+    def key_forward(self, event):
+        print("Forward")
 
 
 
