@@ -10,7 +10,8 @@ LARGE_FONT = ("Times", 12)
 Bg_theme = ("#1e353e")
 B_color = ("#1e73f7")
 uName = ("Thor")
-global TOP
+FG = ("white")
+BC = ("#2c39b1")
 #RobotImg = tk.PhotoImage(file="Robot.png")
 
 
@@ -68,7 +69,7 @@ class Page(tk.Tk):
 
 
 
-        self.show_frame(RobotControl)
+        self.show_frame(Log_In)
 
     def show_frame(self, cont):     #the "container" or "Controller" is the key whcih will look for the value of "self.frame"
                                     #   The key will specify a frame, which will be raised to the front in the "show_frame"-function
@@ -137,6 +138,8 @@ class StartPage(tk.Frame):
 
 class RobotControl(tk.Frame):
 
+    i = None
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg=Bg_theme)
 
@@ -160,37 +163,37 @@ class RobotControl(tk.Frame):
         left_frame = tk.Frame(self, bg=Bg_theme)
         left_frame.pack(side="left", fill="y")
 
-        but_send = tk.Button(left_frame, text="Send", width=5)
+        self.but_send = tk.Button(left_frame, text="Send", width=5, bg=BC, fg=FG)
         mes_entry = tk.Entry(left_frame, width=40)
-        but_del = tk.Button(left_frame, text="Delete text", width=10)
+        but_del = tk.Button(left_frame, text="Delete text", width=10, bg=BC, fg=FG)
         txt_field = tk.Text(left_frame, width=45, height=22, wrap="word")
-        F_forward = tk.Button(left_frame, text="Fast Forward", width=25)
-        S_forward = tk.Button(left_frame, text="Slow Forward", width=25)
-        F_backward = tk.Button(left_frame, text="Fast Backward", width=25)
-        S_backward = tk.Button(left_frame, text="Slow Backward", width=25)
-        R_turn = tk.Button(left_frame, text="Right Turn", width=25)
-        L_turn = tk.Button(left_frame, text="Left Turn", width=25)
-        All_stop = tk.Button(left_frame, text="Motor Stop", width=25)
-        bind_spot = tk.Button(left_frame, text="Push")
+        F_forward = tk.Button(left_frame, text="Fast Forward", width=25, bg=BC, fg=FG)
+        S_forward = tk.Button(left_frame, text="Slow Forward", width=25, bg=BC, fg=FG)
+        F_backward = tk.Button(left_frame, text="Fast Backward", width=25, bg=BC, fg=FG)
+        S_backward = tk.Button(left_frame, text="Slow Backward", width=25, bg=BC, fg=FG)
+        R_turn = tk.Button(left_frame, text="Right Turn", width=25, bg=BC, fg=FG)
+        L_turn = tk.Button(left_frame, text="Left Turn", width=25, bg=BC, fg=FG)
+        All_stop = tk.Button(left_frame, text="Motor Stop", width=25, bg=BC, fg=FG)
+        self.bind_spot = tk.Button(left_frame, text="Push this button to \n control with W,A,S,D. \n Yellow = Active", width=25, height=5, bg=BC, fg=FG)
 
 
 
-        but_send.grid(row=0, column=0, pady=3, padx=2)
+        self.but_send.grid(row=0, column=0, pady=3, padx=2)
         mes_entry.grid(row=0, column=1, pady=3, padx=2)
         but_del.grid(row=0, column=2, pady=3, padx=2)
         txt_field.grid(rowspan=10, columnspan=3, pady=3, padx=2, sticky="nsew")
-        F_forward.grid(row=1,column=4, padx=20, sticky="n")
-        S_forward.grid(row=2,column=4, padx=20, sticky="n")
-        F_backward.grid(row=3,column=4, padx=20, sticky="n")
-        S_backward.grid(row=4,column=4, padx=20, sticky="n")
-        R_turn.grid(row=5,column=4, padx=20, sticky="n")
-        L_turn.grid(row=6,column=4, padx=20, sticky="n")
-        All_stop.grid(row=7,column=4, padx=20, sticky="n")
-        bind_spot.grid(row=8, column=4,padx=20, sticky="n")
+        F_forward.grid(row=1,column=4, padx=20,pady=5, sticky="n")
+        S_forward.grid(row=2,column=4, padx=20,pady=5, sticky="n")
+        F_backward.grid(row=3,column=4, padx=20,pady=5, sticky="n")
+        S_backward.grid(row=4,column=4, padx=20,pady=5, sticky="n")
+        R_turn.grid(row=5,column=4, padx=20,pady=5, sticky="n")
+        L_turn.grid(row=6,column=4, padx=20,pady=5, sticky="n")
+        All_stop.grid(row=7,column=4, padx=20,pady=5, sticky="n")
+        self.bind_spot.grid(row=8, column=4,padx=20, pady=15, sticky="n")
 
-        bind_spot.focus_set()
+        #bind_spot.focus_set()
 
-        but_send.bind("<Button-1>", self.printing)
+        self.but_send.bind("<Button-1>", self.printing)
         but_del.bind("<Button-1>", self.printing)
         F_forward.bind("<Button-1>", self.printing)
         S_forward.bind("<Button-1>", self.printing)
@@ -198,27 +201,45 @@ class RobotControl(tk.Frame):
         S_backward.bind("<Button-1>", self.printing)
         R_turn.bind("<Button-1>", self.printing)
         L_turn.bind("<Button-1>", self.printing)
-        All_stop.bind("<Button-1>", self.printing)
+        All_stop.bind("<1>", self.printing)
 
-        left_frame.bind("<Button-1>", self.key_forward)
+        self.bind_spot.bind("<w>", self.forward)
+        self.bind_spot.bind("<s>", self.backward)
+        self.bind_spot.bind("<a>", self.left_turn)
+        self.bind_spot.bind("<d>", self.right_turn)
+        #self.bind_spot.bind("<Button-1>", lambda event: self.bind_spot.focus_set())
+        self.bind_spot.bind("<Button-1>", self.Button_color)
 
-        bind_spot.bind("<w>", self.key_forward)
-        #self.bind_spot.bind("<1>", lambda event: self.bind_spot.focus_set())
 
-
-        #settings.txt = Text(left_frame, width=50, height=20, wrap=WORD)
-        #settings.txt.grid(row=1, column=0, pady=4, padx=4, sticky=NSEW)
     # ----------------------------------------------------- Right
-        right_frame = tk.Frame(self, bg="green")
+        right_frame = tk.Frame(self, bg="")
         right_frame.pack()
 
     def printing(self, event):
         print("hey")
 
-    def key_forward(self, event):
+    def forward(self, event):
         print("Forward")
 
+    def backward(self, event):
+        print("Backward")
 
+    def left_turn(self, event):
+        print("Left Turn")
+
+    def right_turn(self, event):
+        print("Right Turn")
+
+    def Button_color(self, event):
+
+        if self.i is None:
+            self.bind_spot.configure(bg="yellow", fg="black")
+            self.bind_spot.focus_set()
+            self.i = 1
+        else:
+            self.bind_spot.configure(bg="#2c39b1", fg=FG)
+            self.but_send.focus_set()
+            self.i = None
 
 class MovieDecider(tk.Frame):
 
