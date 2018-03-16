@@ -48,9 +48,10 @@ class Page(tk.Tk):
         #    self.frames[F] = frame
         #    frame.grid(row=0, column=0, sticky="nsew")
 
-        start_page = StartPage(container, self)
-        login = Log_In(container, self, start_page)
         controll = RobotControl(container, self)
+        start_page = StartPage(container, self, controll)
+        login = Log_In(container, self, start_page,)
+
 
 
         self.frames[Log_In] = login
@@ -98,7 +99,7 @@ class Log_In(tk.Frame):
         #log_but = tk.Button(self, text="Log In", width=16,
         #                     command=lambda: controller.show_frame(StartPage))
         log_but = tk.Button(self, text="Log In", width=16,
-                            command=lambda: self.start_page.setName(name_entry.get(), pass_entry.get()))
+                            command=lambda: self.start_page.setName(name_entry.get(), pass_entry.get())
         log_but.grid(row=4, column=0, pady=7)
        # log_but.bind("<Button-1>", lambda: controller.show_frame(StartPage))
 
@@ -109,10 +110,10 @@ class Log_In(tk.Frame):
 
 class StartPage(tk.Frame):
 
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller, controll):
         self.name = None
         self.passW = None
-
+        self.controll = controll
         tk.Frame.__init__(self, parent, bg=Bg_theme)
         self.controller = controller
         self.label_Head = tk.Label(self, font=HEADLINE_FONT,
@@ -149,12 +150,14 @@ class StartPage(tk.Frame):
 
 
 class RobotControl(tk.Frame):
-
     i = None
-
     def __init__(self, parent, controller):
+        self.name = None
+        self.passW = None
+
         tk.Frame.__init__(self, parent, bg=Bg_theme)
 
+        self.txtOut  = ""
         self.RobotImg = tk.PhotoImage(file="Robot.png")
     # --------------------------------------------------    Top
         HeadLineFrame = tk.Frame(self, bg=Bg_theme)
@@ -223,11 +226,27 @@ class RobotControl(tk.Frame):
         self.right_frame = tk.Frame(self, bg="")
         self.right_frame.pack()
 
-    def printing(self, event):
+    def setName(self, name, passW):
+        self.name = name
+        self.passW = passW
+        if name != None:
+            self.label_Head.configure(text="Welcome to the Multi-tool " + self.name + "!")
+        if passW != None:
+            self.label_pass.configure(text="Your password is '" + self.passW + "', hehe")
+        self.tkraise()
+
+    def printing(self, event, name):
+        self.name = name
         print("hey")
+        self.txtOut = self.mes_entry.get()
+        self.txt_field.insert(0.0, str(self.name)+":" + str(self.txtOut) + "\n")
+        self.mes_entry.delete(0, 'end')
 
     def forward(self, event):
         print("Forward")
+        self.txtOut = self.mes_entry.get()
+        self.txt_field.insert(0.0, str(self.name)+":" + str(self.txtOut) + "\n")
+        self.mes_entry.delete(0, 'end')
 
     def backward(self, event):
         print("Backward")
