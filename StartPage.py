@@ -99,7 +99,7 @@ class Log_In(tk.Frame):
         #log_but = tk.Button(self, text="Log In", width=16,
         #                     command=lambda: controller.show_frame(StartPage))
         log_but = tk.Button(self, text="Log In", width=16,
-                            command=lambda: self.start_page.setName(name_entry.get(), pass_entry.get())
+                            command=lambda: self.start_page.setName_S(name_entry.get(), pass_entry.get()))
         log_but.grid(row=4, column=0, pady=7)
        # log_but.bind("<Button-1>", lambda: controller.show_frame(StartPage))
 
@@ -111,7 +111,8 @@ class Log_In(tk.Frame):
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller, controll):
-        self.name = None
+        global name
+        self.uname = None
         self.passW = None
         self.controll = controll
         tk.Frame.__init__(self, parent, bg=Bg_theme)
@@ -131,22 +132,25 @@ class StartPage(tk.Frame):
         label_intro2.pack(pady=2)
         label_intro3.pack(pady=4)
 
+        #button_Robot = tk.Button(self, text="Robot Control", bg=B_color, fg="white", width=20, font=("Times", 14),
+        #                        command=lambda: self.controller.show_frame(RobotControl))  # By using lambda i can use the function for many things.
         button_Robot = tk.Button(self, text="Robot Control", bg=B_color, fg="white", width=20, font=("Times", 14),
-                                 command=lambda: self.controller.show_frame(
-                                     RobotControl))  # By using lambda i can use the function for many things.
+                                 command=lambda: self.controll.setName_C(self.setName_S))
+
         button_movie = tk.Button(self, text="Movie Decider", bg=B_color, fg="white", width=20, font=("Times", 14),
                                  command=lambda: self.controller.show_frame(MovieDecider))
         button_Robot.pack()
         button_movie.pack()
 
-    def setName(self, name, passW):
-        self.name = name
+    def setName_S(self, name, passW):
+        self.uname = name
         self.passW = passW
         if name != None:
-            self.label_Head.configure(text = "Welcome to the Multi-tool " + self.name + "!")
+            self.label_Head.configure(text = "Welcome to the Multi-tool " + self.uname + "!")
         if passW != None:
             self.label_pass.configure(text="Your password is '"+self.passW+ "', hehe")
         self.tkraise()
+        return name
 
 
 class RobotControl(tk.Frame):
@@ -163,7 +167,7 @@ class RobotControl(tk.Frame):
         HeadLineFrame = tk.Frame(self, bg=Bg_theme)
         HeadLineFrame.pack(side="top", fill="x")
 
-        H_line = tk.Label(HeadLineFrame, text="Robot Control Center", font=HEADLINE_FONT, bg=Bg_theme, fg="white")
+        H_line = tk.Label(HeadLineFrame, text="HeyRobot Control Center", font=HEADLINE_FONT, bg=Bg_theme, fg="white")
         self.fil_lab = tk.Label(HeadLineFrame, text="__________", bg=Bg_theme, fg=Bg_theme, width=23)
         self.but_instruct = tk.Label(HeadLineFrame, text="Instruction Buttons", bg=Bg_theme, fg="white", font=LARGE_FONT2)
 
@@ -226,20 +230,15 @@ class RobotControl(tk.Frame):
         self.right_frame = tk.Frame(self, bg="")
         self.right_frame.pack()
 
-    def setName(self, name, passW):
+    def setName_C(self, name):
         self.name = name
-        self.passW = passW
-        if name != None:
-            self.label_Head.configure(text="Welcome to the Multi-tool " + self.name + "!")
-        if passW != None:
-            self.label_pass.configure(text="Your password is '" + self.passW + "', hehe")
         self.tkraise()
 
-    def printing(self, event, name):
-        self.name = name
+    def printing(self, event):      # Include "name" then the username should be included.. later
+        #self.name = name
         print("hey")
         self.txtOut = self.mes_entry.get()
-        self.txt_field.insert(0.0, str(self.name)+":" + str(self.txtOut) + "\n")
+        self.txt_field.insert(0.0, "Controller:" + str(self.txtOut) + "\n")
         self.mes_entry.delete(0, 'end')
 
     def forward(self, event):
